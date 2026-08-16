@@ -1,0 +1,135 @@
+
+services:
+
+  # =========================
+  # PRODUCT SERVICE
+  # =========================
+
+  product-service:
+    build:
+      context: ./services/product-service
+
+    container_name: product-service
+
+    ports:
+      - "5001:5001"
+
+    environment:
+      PORT: 5001
+      MONGO_URI: mongodb://mongodb:27017/shopkart
+
+    depends_on:
+      - mongodb
+
+    networks:
+      - ecommerce-network
+
+
+  # =========================
+  # SEARCH SERVICE
+  # =========================
+
+  search-service:
+    build:
+      context: ./services/search-service
+
+    container_name: search-service
+
+    ports:
+      - "5002:5002"
+
+    environment:
+      PORT: 5002
+      MONGO_URI: mongodb://mongodb:27017/shopkart
+
+    depends_on:
+      - mongodb
+
+    networks:
+      - ecommerce-network
+
+
+  # =========================
+  # CART SERVICE
+  # =========================
+
+  cart-service:
+    build:
+      context: ./services/cart-service
+
+    container_name: cart-service
+
+    ports:
+      - "5003:5003"
+
+    environment:
+      PORT: 5003
+      MONGO_URI: mongodb://mongodb:27017/shopkart
+
+    depends_on:
+      - mongodb
+
+    networks:
+      - ecommerce-network
+
+
+  # =========================
+  # ORDER SERVICE
+  # =========================
+
+  order-service:
+    build:
+      context: ./services/order-service
+
+    container_name: order-service
+
+    ports:
+      - "5004:5004"
+
+    environment:
+      PORT: 5004
+      MONGO_URI: mongodb://mongodb:27017/shopkart
+
+    depends_on:
+      - mongodb
+
+    networks:
+      - ecommerce-network
+
+
+  # =========================
+  # MONGODB
+  # =========================
+
+  mongodb:
+    image: mongo:8
+
+    container_name: mongodb
+
+    ports:
+      - "27017:27017"
+
+    volumes:
+      - mongodb-data:/data/db
+
+    networks:
+      - ecommerce-network
+
+
+# =========================
+# NETWORK
+# =========================
+
+networks:
+
+  ecommerce-network:
+    driver: bridge
+
+
+# =========================
+# VOLUME
+# =========================
+
+volumes:
+
+  mongodb-data:
